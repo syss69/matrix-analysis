@@ -1,12 +1,10 @@
-/**
- * configuration
- */
+//configuration
+
 const MATRIX_SIZE = 10;
 const RANGE = { MIN: -100, MAX: 100 } as const;
 
-/**
- * interfaces
- */
+//interfaces
+
 interface RowAnalysis {
   index: number;
   data: number[];
@@ -21,23 +19,20 @@ interface MatrixAnalysisResult {
   rows: RowAnalysis[];
 }
 
-/**
- * random number in range
- */
+//random number in range
+
 const getRandomInt = (min: number, max: number): number =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
-/**
- * matrix generation
- */
+//matrix generation
+
 const generateMatrix = (size: number, min: number, max: number): number[][] =>
   Array.from({ length: size }, () =>
     Array.from({ length: size }, () => getRandomInt(min, max)),
   );
 
-/**
- * calculation of minimum replacements
- */
+//calculation of minimum replacements
+
 const calculateFixes = (row: number[]): number => {
   let totalFixes = 0;
   let currentSequence = 1;
@@ -61,9 +56,8 @@ const calculateFixes = (row: number[]): number => {
   return totalFixes;
 };
 
-/**
- * analysis of one row of the matrix
- */
+//analysis of one row of the matrix
+
 const analyzeRow = (row: number[], index: number, globalMin: number): RowAnalysis => {
   const positives = row.filter((n) => n > 0);
 
@@ -76,9 +70,8 @@ const analyzeRow = (row: number[], index: number, globalMin: number): RowAnalysi
   };
 };
 
-/**
- * analysis of the entire matrix
- */
+//analysis of the entire matrix
+
 const analyzeMatrix = (matrix: number[][]): MatrixAnalysisResult => {
   const globalMin = Math.min(...matrix.flat());
   const rows = matrix.map((row, index) => analyzeRow(row, index, globalMin));
@@ -90,17 +83,15 @@ const analyzeMatrix = (matrix: number[][]): MatrixAnalysisResult => {
   };
 };
 
-/**
- * build table header
- */
+//build table header
+
 const buildHeader = (size: number): string => {
   const columns = Array.from({ length: size }, (_, i) => i.toString().padStart(6)).join("");
   return `    ${columns}  | Мин.Пол | Замен`;
 };
 
-/**
- * output analysis result
- */
+// output analysis result
+
 const printAnalysis = (result: MatrixAnalysisResult): void => {
   const { matrix, globalMin, rows } = result;
   const size = matrix.length;
