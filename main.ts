@@ -64,7 +64,7 @@ const analyzeRow = (row: number[], index: number, globalMin: number): RowAnalysi
   return {
     index,
     data: row,
-    minPositive: positives.length > 0 ? Math.min(...positives) : "—", //if there are no positive numbers, we return "—"
+    minPositive: positives.length > 0 ? Math.min(...positives) : "-", //if there are no positive numbers, we return ""
     fixesNeeded: calculateFixes(row),
     isGlobalMinRow: row.includes(globalMin),
   };
@@ -114,9 +114,12 @@ const printAnalysis = (result: MatrixAnalysisResult): void => {
   });
 
   console.log("=".repeat(95));
-  console.log(`* — строка с минимальным числом в матрице (${globalMin})`);
+  console.log(`* - строка с минимальным числом в матрице (${globalMin})`);
   console.log(
-    "Замен — мин. кол-во замен для исключения трёх чисел подряд одного знака (+/+ /+ или -/-/-)\n",
+    "Мин. пол - минимальное положительное число в строке",
+  );
+  console.log(
+    "Замен - мин. кол-во замен для исключения трёх чисел подряд одного знака (+/+ /+ или -/-/-)\n",
   );
 };
 
