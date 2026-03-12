@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "name": "matrix-analysis",
+  "version": "1.0.0",
+  "main": "main.ts",
+  "devDependencies": {},
+  "scripts": {
+    "start": "tsx main.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
