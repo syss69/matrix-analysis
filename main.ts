@@ -1,7 +1,7 @@
 //configuration
 
 const MATRIX_SIZE = 10;
-const RANGE = { MIN: -100, MAX: 100 } as const;
+const RANGE = { MIN: -1, MAX: 1 } as const;
 
 //interfaces
 
@@ -34,17 +34,35 @@ const generateMatrix = (size: number, min: number, max: number): number[][] =>
 //calculation of minimum replacements
 
 const calculateFixes = (row: number[]): number => {
+
+  /* This solution is more suitable for the problem, since the problem asks to calculate the number of replacements only for positive and negative numbers, \
+  without mentioning zeros. However, if you need to calculate the number of replacements for zeros, you can use the calculateFixesWithZeros function,
+  which is located below.
+  */
+  let totalFixes = 0;
+  let currentSequence = 1;
+  for (let i = 1; i <= row.length; i++) {
+    const prevSign = Math.sign(row[i - 1]);
+    const currSign = (i < row.length && row[i] !== 0) ? Math.sign(row[i]) : null;
+    if (currSign !== 0 && currSign === prevSign && prevSign !== 0) { //if the current sign is the same as the previous sign and the previous sign is not zero, we increment the current sequence
+      currentSequence++;
+    } else {
+      totalFixes += Math.floor(currentSequence / 3);
+      currentSequence = 1;
+    }
+  }
+  return totalFixes;
+};
+
+//Alternative implementation that also counts sequences of zeros.
+
+const calculateFixesWithZeros = (row: number[]): number => {
   let totalFixes = 0;
   let currentSequence = 1;
 
   for (let i = 1; i <= row.length; i++) { //logic: we count the length of the continuous sequence L and take floor(L / 3)
     const prevSign = Math.sign(row[i - 1]); 
-    const currSign = i < row.length ? Math.sign(row[i]) || 1 : null;
-    /*
-    *according to the problem, we only check for positive and negative numbers, ignoring zeros. 
-    *in this scenario (10x10 matrix with range [-100, 100]) the possibility of three zeros in a row is very low, so we can ignore it, but if we need to check for zeros, we can add the following logic:
-    * const currSign = i < row.length ? Math.sign(row[i]) : null;
-    * */
+    const currSign = i < row.length ? Math.sign(row[i]) : null;
     if (currSign === prevSign) {
       currentSequence++;
     } else {
@@ -52,7 +70,6 @@ const calculateFixes = (row: number[]): number => {
       currentSequence = 1;
     }
   }
-
   return totalFixes;
 };
 
@@ -64,7 +81,7 @@ const analyzeRow = (row: number[], index: number, globalMin: number): RowAnalysi
   return {
     index,
     data: row,
-    minPositive: positives.length > 0 ? Math.min(...positives) : "-", //if there are no positive numbers, we return ""
+    minPositive: positives.length > 0 ? Math.min(...positives) : "-", //if there are no positive numbers, we return "-"
     fixesNeeded: calculateFixes(row),
     isGlobalMinRow: row.includes(globalMin),
   };
