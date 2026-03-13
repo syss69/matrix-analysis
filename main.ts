@@ -1,7 +1,7 @@
 //configuration
 
 const MATRIX_SIZE = 10;
-const RANGE = { MIN: -1, MAX: 1 } as const;
+const RANGE = { MIN: -100, MAX: 100 } as const;
 
 //interfaces
 
